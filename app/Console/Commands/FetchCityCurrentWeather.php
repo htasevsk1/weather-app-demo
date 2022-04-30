@@ -22,6 +22,8 @@ class FetchCityCurrentWeather extends Command
      */
     protected $description = 'Command description';
 
+    protected OpenWeatherService $service;
+
     public function __construct(OpenWeatherService $service)
     {
         parent::__construct();
