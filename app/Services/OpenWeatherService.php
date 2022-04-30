@@ -49,6 +49,15 @@ class OpenWeatherService
         ]);
     }
 
+    public function getCurrentWeatherById(int $id)
+    {
+        return $this->getCurrentWeather([
+            'id' => $id,
+            'units' => 'metric',
+            'appid' => $this->apiKey
+        ]);
+    }
+
     public function destructCurrentWeatherData(array $weatherData)
     {
         if ($weatherData && $weatherData['cod'] == 200) {
