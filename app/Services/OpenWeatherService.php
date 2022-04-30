@@ -37,14 +37,32 @@ class OpenWeatherService
             return null;
         }
 
-        return $response;
+        return $response->json();
     }
 
     public function getCurrentWeatherByCityName(string $city)
     {
         return $this->getCurrentWeather([
             'q' => $city,
+            'units' => 'metric',
             'appid' => $this->apiKey
         ]);
+    }
+
+    public function destructCurrentWeatherData(array $weatherData)
+    {
+        if ($weatherData && $weatherData['cod'] == 200) {
+            return [
+                'temp' => $weatherData['main']['temp'],
+                'humidity' => $weatherData['main']['humidity'],
+                'description' => $weatherData['weather'][0]['main']
+            ];
+        }
+
+        return [
+            'temp' => null,
+            'humidity' => null,
+            'description' =>  null,
+        ];
     }
 }

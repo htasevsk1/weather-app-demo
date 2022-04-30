@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Models\City;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -17,8 +18,8 @@ class FetchCurrentWeather implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected array $cities;
     protected OpenWeatherService $service;
+    protected array $cities;
 
     /**
      * Create a new job instance.
@@ -27,7 +28,6 @@ class FetchCurrentWeather implements ShouldQueue
      */
     public function __construct()
     {
-        $this->cities = ['Skopje', 'Tetovo', 'Ohrid'];
         $this->service = new OpenWeatherService();
     }
 
@@ -38,12 +38,18 @@ class FetchCurrentWeather implements ShouldQueue
      */
     public function handle()
     {
-        Log::info('job fetch data');
+        Log::info('Job for fetching cities current weather data.');
 
         Redis::transaction(function ($redis) {
-            foreach ($this->cities as $city) {
-                $weatherData = $this->service->getCurrentWeatherByCityName($city);
-                $redis->set($city, $weatherData);
+            foreach (City::all() as $city) {
+                // Get data
+                $response = $this->service->getCurrentWeatherByCityName($city->name);
+
+                // Prepare format
+                $weatherData = $this->service->destructCurrentWeatherData($response);
+                
+                // Set data as hash in redis
+                $redis->hmset($city->name, $weatherData);
             }
         });
     }

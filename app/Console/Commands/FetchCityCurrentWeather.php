@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Services\OpenWeatherService;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 
 class FetchCityCurrentWeather extends Command
 {
@@ -42,7 +41,7 @@ class FetchCityCurrentWeather extends Command
 
         $response = $this->service->getCurrentWeatherByCityName($city);
 
-        $this->output->success(sprintf("The following data for city %s was retrieved from the API: \n %s", $city, $response));
+        $this->output->success(sprintf("The following data for city %s was retrieved from the API: \n %s", $city, json_encode($response)));
 
         return true;
     }
