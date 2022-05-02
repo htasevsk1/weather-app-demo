@@ -17,7 +17,7 @@ This is a basic [Laravel app](https://laravel.com/) build using [Laravel Sail](h
 ### OpenWeatherService 
 This is a custom service class made to easily interact with [OpenWeather API](https://openweathermap.org/) inside the application.
 
-### FetchCityCurrent 
+### FetchCityCurrentWeather 
 This a custom command that can be used to fetch current weather data for a specified city.
 
 **Example:**
