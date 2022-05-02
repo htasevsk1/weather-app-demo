@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\City;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 
 class DemoController extends Controller
 {
     public function index(){
+        $keys = Redis::keys('cities.*');
+
         $cities = [];
 
-        foreach(City::all() as $city) {
-            $cities[$city->name] = Redis::hgetall($city->name);
+        foreach($keys as $key) {
+            $cities[str_replace('cities.', '', $key)] = Redis::hgetall($key);
         }
 
         return view('demo', ['cities' => $cities]);

@@ -49,7 +49,7 @@ class FetchCurrentWeather implements ShouldQueue
                 $weatherData = $this->service->destructCurrentWeatherData($response);
                 
                 // Set data as hash in redis
-                $redis->hmset($city->name, $weatherData);
+                $redis->hmset("cities.{$city->name}", $weatherData);
             }
         });
     }

@@ -41,7 +41,7 @@
                         <li>
                             City name: {{ $name }}
                             <ul>
-                                <li>Temperature: {{ $data['temp']}}</li>
+                                <li>Temperature: {{ round($data['temp']) }} <span>&#8451;</span></li>
                                 <li>Humidity: {{ $data['humidity']}}%</li>
                                 <li>Condition: {{ $data['description']}}</li>
                             </ul>
